@@ -7,6 +7,9 @@ const source = fs.readFileSync(inboxPath, 'utf8');
 
 //console.log(solc.compile(source, 1)); 
 
+// two properties
+// interface: javascript API
+// bytecode: raw compiled contract 
 module.exports = solc.compile(source, 1).contracts[':Inbox']; 
 
 
