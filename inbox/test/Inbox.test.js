@@ -2,9 +2,13 @@ const assert = require('assert');
 const ganache = require('ganache-cli');
 // A constructor used to create a web3 instance 
 const Web3 = require('web3');
+// web3 broken kind of, this is the fix
+const provider = ganache.provider(); 
+const web3 = new Web3(provider); 
+
 // local ganache network creates a set of accounts 
 // all functions are asynchronous in nature (always returns a promise)
-const web3 = new Web3(ganache.provider());
+//const web3 = new Web3(ganache.provider());
 const { interface, bytecode } = require('../compile'); 
 
 let accounts; 
@@ -42,13 +46,19 @@ beforeEach(async () => {
     inbox = await new web3.eth.Contract(JSON.parse(interface))
         .deploy({data: bytecode, arguments: ['Hi there!']})
         .send({from: accounts[0], gas:'1000000'});
+
+    inbox.setProvider(provider); 
     
 
 });
 
 describe('Inbox', () => {
     it('deploys a contract', () => { // add an it statement to make sure beforeEach runs at least once 
-        console.log(inbox); 
+        /*console.log(inbox);*/
+        // presence of an address means its succesfully deployed to ganache 
+        // ok method makes sure that value exists (not NULL or undefined) 
+        assert.ok(inbox.options.address); // wherever this contract was deployed to
+    
     });
 });
 
