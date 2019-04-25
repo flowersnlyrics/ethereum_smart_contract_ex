@@ -2,13 +2,19 @@ const assert = require('assert');
 const ganache = require('ganache-cli');
 // A constructor used to create a web3 instance 
 const Web3 = require('web3');
+// web3 broken kind of, this is the fix
+const provider = ganache.provider(); 
+const web3 = new Web3(provider); 
+
 // local ganache network creates a set of accounts 
 // all functions are asynchronous in nature (always returns a promise)
-const web3 = new Web3(ganache.provider());
+//const web3 = new Web3(ganache.provider());
 const { interface, bytecode } = require('../compile'); 
 
 let accounts; 
-let inbox; 
+let inbox;
+
+// rinkeby.infura.io/v3/1fd8c7ce6bf14756916218256ee8288d 
 
 beforeEach(async () => {
 
@@ -42,13 +48,47 @@ beforeEach(async () => {
     inbox = await new web3.eth.Contract(JSON.parse(interface))
         .deploy({data: bytecode, arguments: ['Hi there!']})
         .send({from: accounts[0], gas:'1000000'});
+
+    inbox.setProvider(provider); 
     
 
 });
 
 describe('Inbox', () => {
     it('deploys a contract', () => { // add an it statement to make sure beforeEach runs at least once 
-        console.log(inbox); 
+        /*console.log(inbox);*/
+        // presence of an address means its succesfully deployed to ganache 
+        // ok method makes sure that value exists (not NULL or undefined) 
+        assert.ok(inbox.options.address); // wherever this contract was deployed to 
+    });
+
+    // anytime we deploy an instance of our contract we def get a default message on our instance 
+    it('has a default message', async () => {
+        // write some code to somehow look at the inbox 
+        // and somehow pull up the message property.
+        // call a method on our inbox contract
+        // calling a method is going to return a promise
+        // and we have to wait for that promise to be resolved
+        // contract has property called methods
+        //     all public functions are in the methods object
+        // first set of () - pass in any arguments
+        // second set of () - used to customize transaction - how fx gets called 
+        //     are attempting to send out to the network
+        //     like who is going to send a message and how much gas to use
+        const message = await inbox.methods.message().call();
+        assert.equal(message, 'Hi there!'); 
+    });
+
+    // attempt to modify and retrieve message
+    it('can change the message', async () => {
+        // initial setup
+        // we have to send transaction out to the network
+        await inbox.methods.setMessage('bye').send({from:accounts[0]}) ;
+        // whenever we send transaction we get back an object
+        // which is kind of like a receipt for the transaction
+        // we sent in 
+        const message = await inbox.methods.message().call(); 
+        assert.equal(message, 'bye'); 
     });
 });
 
