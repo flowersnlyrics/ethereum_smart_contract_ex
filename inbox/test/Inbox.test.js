@@ -12,7 +12,9 @@ const web3 = new Web3(provider);
 const { interface, bytecode } = require('../compile'); 
 
 let accounts; 
-let inbox; 
+let inbox;
+
+// rinkeby.infura.io/v3/1fd8c7ce6bf14756916218256ee8288d 
 
 beforeEach(async () => {
 
