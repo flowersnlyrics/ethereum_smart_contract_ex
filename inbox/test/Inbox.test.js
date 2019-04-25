@@ -57,8 +57,36 @@ describe('Inbox', () => {
         /*console.log(inbox);*/
         // presence of an address means its succesfully deployed to ganache 
         // ok method makes sure that value exists (not NULL or undefined) 
-        assert.ok(inbox.options.address); // wherever this contract was deployed to
-    
+        assert.ok(inbox.options.address); // wherever this contract was deployed to 
+    });
+
+    // anytime we deploy an instance of our contract we def get a default message on our instance 
+    it('has a default message', async () => {
+        // write some code to somehow look at the inbox 
+        // and somehow pull up the message property.
+        // call a method on our inbox contract
+        // calling a method is going to return a promise
+        // and we have to wait for that promise to be resolved
+        // contract has property called methods
+        //     all public functions are in the methods object
+        // first set of () - pass in any arguments
+        // second set of () - used to customize transaction - how fx gets called 
+        //     are attempting to send out to the network
+        //     like who is going to send a message and how much gas to use
+        const message = await inbox.methods.message().call();
+        assert.equal(message, 'Hi there!'); 
+    });
+
+    // attempt to modify and retrieve message
+    it('can change the message', async () => {
+        // initial setup
+        // we have to send transaction out to the network
+        await inbox.methods.setMessage('bye').send({from:accounts[0]}) ;
+        // whenever we send transaction we get back an object
+        // which is kind of like a receipt for the transaction
+        // we sent in 
+        const message = await inbox.methods.message().call(); 
+        assert.equal(message, 'bye'); 
     });
 });
 
