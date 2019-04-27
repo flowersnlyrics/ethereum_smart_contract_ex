@@ -27,13 +27,21 @@ class SearchBar extends Component{
         // and then value gets updated because state is updated
         // updating the state causes the entire thing to re render
         return (
-            <div>
+            <div className="search-bar">
                 <input 
                     value={this.state.term}
-                    onChange={event => this.setState({ term: event.target.value})} />
+                    onChange={event => this.onInputChange(event.target.value)} />
             </div>
         );
+
+       
     }
+
+    onInputChange(term) {
+           // set state with term and call the callback we got from index
+           this.setState({term}); 
+           this.props.onSearchTermChange(term); 
+       }
 
     // event handler
    // onInputChange(event) { // context/info about event that occured
