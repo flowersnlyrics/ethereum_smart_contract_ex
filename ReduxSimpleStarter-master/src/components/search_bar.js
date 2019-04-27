@@ -7,8 +7,14 @@ class SearchBar extends Component{
 
     // every React component must have a defined render method
     render () {
-        return <input />;
+        //return <input onChange={this.onInputChange} />;
+        return <input onChange={event => console.log(event.target.value)} />;
     }
+
+    // event handler
+   // onInputChange(event) { // context/info about event that occured
+   //     console.log(event.target.value); 
+   // }
 }
 
 export default SearchBar; 
