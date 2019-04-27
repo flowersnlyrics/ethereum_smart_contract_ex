@@ -6,13 +6,22 @@ import React from 'react'; // core react works with react components
 // render component into the DOM from reactDOM
 import ReactDOM from 'react-dom';
 
+// importing our own files we need a file reference 
+import SearchBar from './components/search_bar';
+
+const API_KEY = 'AIzaSyDmwRp2qUU042QWsQoPDQ8AeIQ3tYYJ7P8'; 
+
 // Create a new component. This component should produce some HTML
 // ES6 thing
 // HTML looking stuff is JSX which allows you to write
 // what looks like JS but is really HTML
 // ES6 syntax replace 'function' keywork with a fat arrow => 
 const App = () => {
-    return <div>Hi!</div>;
+    return(
+        <div>
+        <SearchBar />
+        </div>
+    ); 
 }
 
 // Take this component's generated HTML 
