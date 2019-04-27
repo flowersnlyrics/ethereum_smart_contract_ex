@@ -104,6 +104,40 @@ describe('Lottery Contract', () => {
         }
     });
 
+    // end to end test
+    // winner gets money, players array gets reset
+    it('sends money to the winner and resets the players array', async() => {
+        await lottery.methods.enter().send({
+            from: accounts[0],
+            value: web3.utils.toWei('2', 'ether')
+        });
+
+        // only enter accounts[0] into lottery so that it def wins
+        // see if accounts[0] balance before and after is different
+        // should be more after calling pickWinner
+        const initialBalance = await web3.eth.getBalance(accounts[0]); // units of wei
+        
+        // spent gas here 
+        await lottery.methods.pickWinner().send({from: accounts[0]});
+
+        const finalBalance = await web3.eth.getBalance(accounts[0]);
+
+        // wont be exactly two ether because when you send money to 
+        // an account you have to pay a certain amount of gas
+        // for that transaction
+        const difference = finalBalance - initialBalance; 
+        assert(difference > web3.utils.toWei('1.8','ether'));
+        
+        // assert that lottery itself has a balance of zero
+        const lotteryBalance = await web3.eth.getBalance(lottery.options.address);
+        assert(lotteryBalance == 0); 
+
+        // assert that the players array is indeed empty 
+        const players = await lottery.methods.getPlayers().call();
+        assert(players.length == 0); 
+
+    });
+
 });
 
 
