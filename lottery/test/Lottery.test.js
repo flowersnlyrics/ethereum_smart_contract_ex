@@ -74,6 +74,23 @@ describe('Lottery Contract', () => {
         assert.equal(accounts[2], players[2]);  // is, should be 
         assert.equal(3, players.length); 
     });
+
+    // make sure person can enter if they send less than more ether
+    it('requires a minimum amt. of ether to enter', async() => {
+        try{
+            await lottery.methods.enter().send({
+                from: accounts[0], 
+                value: 200 // Wei
+            });
+            assert(false); // test fails here  
+        } catch(err){
+           assert(err); // check for truthfulness, we should get here cause no ether :( 
+           
+        }
+
+    });
+
+
 });
 
 
