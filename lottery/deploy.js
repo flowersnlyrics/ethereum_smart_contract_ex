@@ -29,7 +29,9 @@ const deploy = async () => {
         .deploy({data:bytecode})
         .send({gas:'1000000', from: accounts[0]});
 
-    // for user
+    // we need the interface (the ABI: translates JS to bytecode)
+    console.log(interface); 
+    // we need the address of the contract
     console.log('Contract deployed to ', result.options.address);
 
 };
