@@ -2,12 +2,12 @@ import React from 'react';
 
 // {video} does const video = props.video 
 // {} means you are referencing a JS variable in JSX code
-const VideoListItem = ({video}) => {
+const VideoListItem = ({video, onVideoSelect}) => {
 
     const imageUrl = video.snippet.thumbnails.default.url; 
 
     return (
-        <li className="list-group-item">
+        <li onClick={() => onVideoSelect(video)} className="list-group-item">
            <div className="video-list media"> 
               <div className="media-left">
                   <img className="media-object" src={imageUrl}/>
