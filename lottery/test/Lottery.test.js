@@ -119,7 +119,6 @@ describe('Lottery Contract', () => {
         
         // spent gas here 
         await lottery.methods.pickWinner().send({from: accounts[0]});
-
         const finalBalance = await web3.eth.getBalance(accounts[0]);
 
         // wont be exactly two ether because when you send money to 
