@@ -89,7 +89,20 @@ describe('Lottery Contract', () => {
         }
 
     });
+    
+    // if some person other than the manager attemps to 
+    // pick a winner an error should be thrown
+    it('only manager can call pickWinner', async() => {
+        try{
+            await lottery.methods.pickWinner().send({
+                from: accounts[1]
+            });
 
+            assert(false); //automatically fails the test no matter what
+        } catch(err) {
+            assert(err); // error should be thrown since ACCT.1 is not the manager (acct 0 is)  
+        }
+    });
 
 });
 
